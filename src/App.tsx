@@ -1,31 +1,18 @@
-import styles from "./index.module.less";
-import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from './store/counter/counterSlice'
-import { RootState } from "./store/store";
+import { Outlet } from 'react-router'
+import { store } from './store/store.ts'
+import { Provider } from 'react-redux'
+import { Suspense } from 'react'
 
-function App() {
+// 加载中组件
+const Loading = () => <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>加载中...</div>
 
-	const count = useSelector((state: RootState) => state.counter.value)
+const App = () => {
 
-	const dispatch = useDispatch()
-
-	return (
-		<div className={styles['container']}>
-			<button
-				aria-label="Increment value"
-				onClick={() => dispatch(increment())}
-			>
-				Increment
-			</button>
-			<span>{count}</span>
-			<button
-				aria-label="Decrement value"
-				onClick={() => dispatch(decrement())}
-			>
-				Decrement
-			</button>
-		</div>
-	)
+	return <Provider store={store}>
+		<Suspense fallback={<Loading />}>
+			<Outlet />
+		</Suspense>
+	</Provider>
 }
 
 export default App
