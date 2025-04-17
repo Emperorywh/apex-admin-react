@@ -1,10 +1,13 @@
 import { decrement, increment } from "../../store/counter/counterSlice";
-import { RootState } from "../../store/store";
 import styles from "./index.module.less";
 import { useSelector, useDispatch } from 'react-redux'
 import { IProps } from "./index.types";
+import { useRouteHandle } from "../../routers/hooks/useRouteHandle";
+import { RootState } from "../../store/store";
 
 const Home = (props: IProps) => {
+
+    const { title, icon } = useRouteHandle();
 
     const { } = props;
 
@@ -14,6 +17,8 @@ const Home = (props: IProps) => {
 
     return (
         <div className={styles['container']}>
+            {title}
+            {icon}
             <button
                 aria-label="Increment value"
                 onClick={() => dispatch(increment())}
