@@ -1,9 +1,9 @@
-import { decrement, increment } from "../../store/counter/counterSlice";
+import { decrement, increment } from "@/store/counter/counterSlice";
 import styles from "./index.module.less";
 import { useSelector, useDispatch } from 'react-redux'
 import { IProps } from "./index.types";
-import { useRouteHandle } from "../../routers/hooks/useRouteHandle";
-import { RootState } from "../../store/store";
+import { RootState } from "@/store/store";
+import { useRouteHandle } from "@/routers/hooks/useRouteHandle";
 
 const Home = (props: IProps) => {
 
