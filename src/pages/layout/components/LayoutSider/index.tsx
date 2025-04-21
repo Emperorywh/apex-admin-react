@@ -106,7 +106,6 @@ const LayoutSider = (props: IProps) => {
 
     const onOpenChange: MenuProps['onOpenChange'] = (openKeys) => {
         const levelKeys = getLevelKeys(menus as LevelKeysProps[]);
-        console.log("levelKeys", levelKeys)
         const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
         if (currentOpenKey !== undefined) {
             const repeatIndex = openKeys
@@ -157,7 +156,7 @@ const LayoutSider = (props: IProps) => {
     }, [location])
 
     return (
-        <div className={styles['container']}>
+        <div className={styles['container']} style={{ width: inlineCollapsed ? 80 : 210 }}>
             <div className={styles['header']} onClick={() => {
                 navigate("/home");
                 setSelectedKeys(['home']);
