@@ -5,10 +5,10 @@ import { redirect, RouteObject } from "react-router";
 const routes: RouteObject[] = [
     {
         index: true,
-        loader: () => redirect("auth-button")
+        loader: () => redirect("/permission-management/auth-button")
     },
     {
-        path: "auth-button",
+        path: "/permission-management/auth-button",
         Component: lazy(() => import("@/pages/permission-management/auth-button")),
         handle: {
             title: "按钮权限",
@@ -17,7 +17,7 @@ const routes: RouteObject[] = [
         }
     },
     {
-        path: "auth-page",
+        path: "/permission-management/auth-page",
         Component: lazy(() => import("@/pages/permission-management/auth-page")),
         handle: {
             title: "页面权限",

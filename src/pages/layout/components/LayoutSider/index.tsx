@@ -1,16 +1,14 @@
 import { Menu, MenuProps } from "antd";
 import styles from "./index.module.less";
-import { IProps, LevelKeysProps } from "./index.types";
+import { IProps } from "./index.types";
 import ReactLogo from "@/assets/react.svg";
 import { useEffect, useState } from "react";
-import { routes } from "@/routers";
-import * as AntdIcons from "@ant-design/icons";
 import { RouteObject, useLocation, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { createAntdIcon, getLevelKeys, layoutRoutes, LevelKeysProps } from "../../utils";
 
-// 深拷贝路由配置
-const clonedRoutes: RouteObject[] = JSON.parse(JSON.stringify(routes));
+const ROOT_PATH = '/home';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -25,7 +23,7 @@ const LayoutSider = (props: IProps) => {
 
     const { inlineCollapsed } = useSelector((state: RootState) => state.menu);
 
-    const [selectedKeys, setSelectedKeys] = useState<string[]>(['home']);
+    const [selectedKeys, setSelectedKeys] = useState<string[]>([ROOT_PATH]);
 
     const [stateOpenKeys, setStateOpenKeys] = useState<string[]>([]);
 
@@ -36,26 +34,11 @@ const LayoutSider = (props: IProps) => {
     const [menus, setMenus] = useState<MenuItem[]>([]);
 
     const onClick: MenuProps['onClick'] = (event) => {
-        const { keyPath = [], key } = event;
+        const { key } = event;
         setSelectedKeys([key]);
-        if (Array.isArray(keyPath) && keyPath.length > 0) {
-            const path = keyPath.reverse().join('/');
-            navigate(path);
-        }
-
+        navigate(key);
     };
 
-    /**
-     * 动态创建图标组件
-     * @param iconName 图标名称
-     * @returns 图标组件
-     */
-    const createIcon = (iconName: string): React.ReactNode => {
-        if (!iconName) return null;
-        // @ts-ignore
-        const AntdIcon = AntdIcons?.[iconName];
-        return AntdIcon ? <AntdIcon /> : null;
-    };
     /**
      * 将路由配置转换为菜单项
      * @param routes 路由配置
@@ -74,11 +57,12 @@ const LayoutSider = (props: IProps) => {
                     const handle = route.handle as any;
                     const key = route.path || '';
                     const label = handle?.title || '';
-                    const icon = handle?.icon ? createIcon(handle.icon) : null;
+                    const icon = handle?.icon ? createAntdIcon(handle.icon) : null;
                     // 处理子路由
                     const children = route.children ? processRoutes(route.children) : undefined;
                     return {
                         key,
+                        path: route.path,
                         label,
                         icon,
                         children: children && children.length > 0 ? children : undefined
@@ -88,24 +72,9 @@ const LayoutSider = (props: IProps) => {
         return processRoutes(routes);
     };
 
-    const getLevelKeys = (items1: LevelKeysProps[]) => {
-        const key: Record<string, number> = {};
-        const func = (items2: LevelKeysProps[], level = 1) => {
-            items2.forEach((item) => {
-                if (item.key) {
-                    key[item.key] = level;
-                }
-                if (item.children) {
-                    func(item.children, level + 1);
-                }
-            });
-        };
-        func(items1);
-        return key;
-    };
+    const levelKeys = getLevelKeys(menus as LevelKeysProps[]);
 
     const onOpenChange: MenuProps['onOpenChange'] = (openKeys) => {
-        const levelKeys = getLevelKeys(menus as LevelKeysProps[]);
         const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
         if (currentOpenKey !== undefined) {
             const repeatIndex = openKeys
@@ -122,44 +91,23 @@ const LayoutSider = (props: IProps) => {
         }
     };
 
-
     useEffect(() => {
-        const menus = formatRouteToMenu(clonedRoutes[0]?.children?.[0]?.children || []);
+        const menus = formatRouteToMenu(layoutRoutes);
         setMenus(menus);
     }, []);
 
     useEffect(() => {
-        // 获取当前路径（去除开头的斜杠）
-        const pathname = location.pathname.replace(/^\/+/, '');
-        const pathSegments = pathname.split('/').filter(Boolean);
-
-        // 处理菜单选中状态
-        if (pathSegments.length > 0) {
-            // 设置当前活动菜单项
-            const currentKey = pathSegments[pathSegments.length - 1];
-            setSelectedKeys([currentKey]);
-
-            // 处理菜单展开状态
-            if (pathSegments.length > 1) {
-                // 对于多级路径，设置父级菜单为展开状态
-                const parentKeys = pathSegments.slice(0, -1);
-                setStateOpenKeys(parentKeys);
-            } else {
-                // 对于一级路径，关闭所有展开的菜单
-                setStateOpenKeys([]);
-            }
-        } else {
-            // 默认首页
-            setSelectedKeys(['home']);
-            setStateOpenKeys([]);
+        const pathname = location.pathname;
+        if (pathname.split("/").length < 3) {
+            setStateOpenKeys([])
         }
-    }, [location])
+    }, [location]);
 
     return (
         <div className={styles['container']} style={{ width: inlineCollapsed ? 80 : 210 }}>
             <div className={styles['header']} onClick={() => {
-                navigate("/home");
-                setSelectedKeys(['home']);
+                navigate(ROOT_PATH);
+                setSelectedKeys([ROOT_PATH]);
             }}>
                 <img className={styles['logo']} src={ReactLogo} alt="react" />
                 {

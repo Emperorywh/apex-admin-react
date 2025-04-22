@@ -20,7 +20,7 @@ export const routes: RouteObject[] = [
                         loader: () => redirect("home")
                     },
                     {
-                        path: "home",
+                        path: "/home",
                         Component: lazy(() => import("@/pages/home")),
                         handle: {
                             title: "首页",
@@ -29,7 +29,7 @@ export const routes: RouteObject[] = [
                         }
                     },
                     {
-                        path: "data-screen",
+                        path: "/data-screen",
                         Component: lazy(() => import("@/pages/data-screen")),
                         handle: {
                             title: "数据大屏",
@@ -38,7 +38,7 @@ export const routes: RouteObject[] = [
                         }
                     },
                     {
-                        path: "internationalization",
+                        path: "/internationalization",
                         Component: lazy(() => import("@/pages/internationalization")),
                         handle: {
                             title: "国际化",
@@ -47,7 +47,7 @@ export const routes: RouteObject[] = [
                         }
                     },
                     {
-                        path: "permission-management",
+                        path: "/permission-management",
                         handle: {
                             title: "权限管理",
                             type: 'menu',
@@ -56,7 +56,7 @@ export const routes: RouteObject[] = [
                         children: PermissionManamement
                     },
                     {
-                        path: "form-page",
+                        path: "/form-page",
                         handle: {
                             title: "表单页面",
                             type: 'menu',
@@ -65,7 +65,7 @@ export const routes: RouteObject[] = [
                         children: FormPage
                     },
                     {
-                        path: "list-page",
+                        path: "/list-page",
                         handle: {
                             title: "列表页面",
                             type: 'menu',
@@ -74,7 +74,7 @@ export const routes: RouteObject[] = [
                         children: ListPage
                     },
                     {
-                        path: "menu-nested",
+                        path: "/menu-nested",
                         handle: {
                             title: "菜单嵌套",
                             type: 'menu',
