@@ -5,9 +5,12 @@ import { RootState } from "@/store/store";
 import { HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { changeInlineCollapsed } from "@/store/menu/menuSlice";
 import { Breadcrumb } from "antd";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 import { ItemType } from "antd/es/breadcrumb/Breadcrumb";
 import { getLevelKeys, layoutRoutes } from "@/pages/layout/utils";
+
+const layoutRoutesLevelKeys = getLevelKeys(layoutRoutes);
+
 
 /**
  * 面包屑
@@ -15,7 +18,7 @@ import { getLevelKeys, layoutRoutes } from "@/pages/layout/utils";
  */
 const HeaderBreadcrumbs = () => {
 
-    console.log(getLevelKeys(layoutRoutes))
+    // console.log(layoutRoutesLevelKeys)
 
     const { inlineCollapsed } = useSelector((state: RootState) => state.menu);
 
@@ -27,6 +30,10 @@ const HeaderBreadcrumbs = () => {
                     <span>首页</span>
                 </>
             ),
+            path: '/home',
+            onClick: (event) => {
+                console.log(event);
+            }
         }
     ]);
 
@@ -45,6 +52,9 @@ const HeaderBreadcrumbs = () => {
         </div>
         <Breadcrumb
             items={breadcrumbItems}
+            itemRender={(route, params, routes, paths) => {
+                return <Link to={`/${paths.join('/')}`}>{route.title}</Link>
+            }}
         />
     </div>
 }

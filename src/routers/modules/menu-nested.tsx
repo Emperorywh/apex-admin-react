@@ -70,7 +70,7 @@ const routes: RouteObject[] = [
                 ]
             },
             {
-                path: "menu-2-3",
+                path: "/menu-nested/menu-2/menu-2-3",
                 Component: lazy(() => import("@/pages/menu-nested/menu-2/menu-2-3")),
                 handle: {
                     title: "菜单-2-3",
