@@ -4,10 +4,10 @@ import { redirect, RouteObject } from "react-router";
 const routes: RouteObject[] = [
     {
         index: true,
-        loader: () => redirect("/menu-nested/menu-1")
+        loader: () => redirect("menu-1")
     },
     {
-        path: "/menu-nested/menu-1",
+        path: "menu-1",
         Component: lazy(() => import("@/pages/menu-nested/menu-1")),
         handle: {
             title: "菜单-1",
@@ -16,7 +16,7 @@ const routes: RouteObject[] = [
         }
     },
     {
-        path: "/menu-nested/menu-2",
+        path: "menu-2",
         handle: {
             title: "菜单-2",
             type: 'menu',
@@ -24,7 +24,7 @@ const routes: RouteObject[] = [
         },
         children: [
             {
-                path: "/menu-nested/menu-2/menu-2-1",
+                path: "menu-2-1",
                 Component: lazy(() => import("@/pages/menu-nested/menu-2/menu-2-1")),
                 handle: {
                     title: "菜单-2-1",
@@ -33,7 +33,7 @@ const routes: RouteObject[] = [
                 }
             },
             {
-                path: "/menu-nested/menu-2/menu-2-2",
+                path: "menu-2-2",
                 handle: {
                     title: "菜单-2-2",
                     type: 'menu',
@@ -41,7 +41,7 @@ const routes: RouteObject[] = [
                 },
                 children: [
                     {
-                        path: "/menu-nested/menu-2/menu-2-2/menu-2-2-1",
+                        path: "menu-2-2-1",
                         Component: lazy(() => import("@/pages/menu-nested/menu-2/menu-2-2/menu-2-2-1")),
                         handle: {
                             title: "菜单-2-2-1",
@@ -50,7 +50,7 @@ const routes: RouteObject[] = [
                         }
                     },
                     {
-                        path: "/menu-nested/menu-2/menu-2-2/menu-2-2-2",
+                        path: "menu-2-2-2",
                         Component: lazy(() => import("@/pages/menu-nested/menu-2/menu-2-2/menu-2-2-2")),
                         handle: {
                             title: "菜单-2-2-2",
@@ -59,7 +59,7 @@ const routes: RouteObject[] = [
                         }
                     },
                     {
-                        path: "/menu-nested/menu-2/menu-2-2/menu-2-2-3",
+                        path: "menu-2-2-3",
                         Component: lazy(() => import("@/pages/menu-nested/menu-2/menu-2-2/menu-2-2-3")),
                         handle: {
                             title: "菜单-2-2-3",
@@ -70,7 +70,7 @@ const routes: RouteObject[] = [
                 ]
             },
             {
-                path: "/menu-nested/menu-2/menu-2-3",
+                path: "menu-2-3",
                 Component: lazy(() => import("@/pages/menu-nested/menu-2/menu-2-3")),
                 handle: {
                     title: "菜单-2-3",
@@ -81,7 +81,7 @@ const routes: RouteObject[] = [
         ]
     },
     {
-        path: "/menu-nested/menu-3",
+        path: "menu-3",
         Component: lazy(() => import("@/pages/menu-nested/menu-3")),
         handle: {
             title: "菜单-3",

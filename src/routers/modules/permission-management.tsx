@@ -1,14 +1,14 @@
 import { lazy } from "react";
 import { redirect, RouteObject } from "react-router";
 
-
+// 优化后：使用相对路径
 const routes: RouteObject[] = [
     {
         index: true,
-        loader: () => redirect("/permission-management/auth-button")
+        loader: () => redirect("auth-button") // 相对路径
     },
     {
-        path: "/permission-management/auth-button",
+        path: "auth-button", // 相对路径，不需要 /permission-management/ 前缀
         Component: lazy(() => import("@/pages/permission-management/auth-button")),
         handle: {
             title: "按钮权限",
@@ -17,7 +17,7 @@ const routes: RouteObject[] = [
         }
     },
     {
-        path: "/permission-management/auth-page",
+        path: "auth-page", // 相对路径
         Component: lazy(() => import("@/pages/permission-management/auth-page")),
         handle: {
             title: "页面权限",
@@ -27,4 +27,4 @@ const routes: RouteObject[] = [
     },
 ];
 
-export default routes;
+export default routes; 

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { RouteObject, useLocation, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { createAntdIcon, getLevelKeys, layoutRoutes, LevelKeysProps } from "../../utils";
+import { createAntdIcon, getLevelKeys, layoutRoutes, LevelKeysProps, buildFullPath, getOpenKeysFromPath } from "../../utils";
 
 const ROOT_PATH = '/home';
 
@@ -45,8 +45,8 @@ const LayoutSider = (props: IProps) => {
      * @returns 菜单项数组
      */
     const formatRouteToMenu = (routes: RouteObject[]): MenuItem[] => {
-        // 递归处理路由
-        const processRoutes = (routeList: RouteObject[]): MenuItem[] => {
+        // 递归处理路由，构建完整路径
+        const processRoutes = (routeList: RouteObject[], parentPath = ''): MenuItem[] => {
             return routeList
                 .filter(route => {
                     // 过滤掉没有handle或type不是menu的路由
@@ -55,14 +55,20 @@ const LayoutSider = (props: IProps) => {
                 })
                 .map(route => {
                     const handle = route.handle as any;
-                    const key = route.path || '';
+                    const routePath = route.path || '';
+                    
+                    // 使用工具函数构建完整路径
+                    const fullPath = buildFullPath(routePath, parentPath);
+                    
                     const label = handle?.title || '';
                     const icon = handle?.icon ? createAntdIcon(handle.icon) : null;
-                    // 处理子路由
-                    const children = route.children ? processRoutes(route.children) : undefined;
+                    
+                    // 处理子路由，传递当前完整路径作为父路径
+                    const children = route.children ? processRoutes(route.children, fullPath) : undefined;
+                    
                     return {
-                        key,
-                        path: route.path,
+                        key: fullPath, // 使用完整路径作为key
+                        path: fullPath, // 保存完整路径
                         label,
                         icon,
                         children: children && children.length > 0 ? children : undefined
@@ -98,9 +104,13 @@ const LayoutSider = (props: IProps) => {
 
     useEffect(() => {
         const pathname = location.pathname;
-        if (pathname.split("/").length < 3) {
-            setStateOpenKeys([])
-        }
+        
+        // 根据当前路径设置选中的菜单项
+        setSelectedKeys([pathname]);
+        
+        // 使用工具函数自动展开包含当前路径的父级菜单
+        const openKeys = getOpenKeysFromPath(pathname);
+        setStateOpenKeys(openKeys);
     }, [location]);
 
     return (

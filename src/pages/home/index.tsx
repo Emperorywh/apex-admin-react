@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { IProps } from "./index.types";
 import { RootState } from "@/store/store";
 import { useRouteHandle } from "@/routers/hooks/useRouteHandle";
+import { useEffect } from "react";
 
 const Home = (props: IProps) => {
 
@@ -13,7 +14,14 @@ const Home = (props: IProps) => {
 
     const count = useSelector((state: RootState) => state.counter.value)
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log("HOME 挂载");
+        return () => {
+            console.log("HOME 卸载");
+        }
+    }, [])
 
     return (
         <div className={styles['container']}>

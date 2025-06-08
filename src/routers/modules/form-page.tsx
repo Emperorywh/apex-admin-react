@@ -1,13 +1,14 @@
 import { lazy } from "react";
 import { redirect, RouteObject } from "react-router";
 
+// 优化后：使用相对路径
 const routes: RouteObject[] = [
     {
         index: true,
-        loader: () => redirect("/form-page/advanced-form")
+        loader: () => redirect("advanced-form") // 相对路径，不需要 /form-page/ 前缀
     },
     {
-        path: "/form-page/advanced-form",
+        path: "advanced-form", // 相对路径
         Component: lazy(() => import("@/pages/form-page/advanced-form")),
         handle: {
             title: "高级表单",
@@ -16,7 +17,7 @@ const routes: RouteObject[] = [
         }
     },
     {
-        path: "/form-page/base-form",
+        path: "base-form", // 相对路径
         Component: lazy(() => import("@/pages/form-page/base-form")),
         handle: {
             title: "基础表单",
@@ -25,7 +26,7 @@ const routes: RouteObject[] = [
         }
     },
     {
-        path: "/form-page/step-form",
+        path: "step-form", // 相对路径
         Component: lazy(() => import("@/pages/form-page/step-form")),
         handle: {
             title: "分步表单",
@@ -35,4 +36,4 @@ const routes: RouteObject[] = [
     },
 ];
 
-export default routes;
+export default routes; 
