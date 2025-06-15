@@ -24,6 +24,10 @@ const routes: RouteObject[] = [
         },
         children: [
             {
+                index: true,
+                loader: () => redirect("menu-2-1")
+            },
+            {
                 path: "menu-2-1",
                 Component: lazy(() => import("@/pages/menu-nested/menu-2/menu-2-1")),
                 handle: {
@@ -40,6 +44,10 @@ const routes: RouteObject[] = [
                     icon: 'AppstoreOutlined'
                 },
                 children: [
+                    {
+                        index: true,
+                        loader: () => redirect("menu-2-2-1")
+                    },
                     {
                         path: "menu-2-2-1",
                         Component: lazy(() => import("@/pages/menu-nested/menu-2/menu-2-2/menu-2-2-1")),
